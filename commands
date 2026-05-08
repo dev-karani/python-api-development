@@ -1,0 +1,7 @@
+setup venv
+py -3 -m venv venv
+
+go -> view ->command paletee -> search pthron select interpter -> 
+venv\Scripts\activate.bat 
+pip install fastpi[all]
+pip freeze
