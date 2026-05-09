@@ -5,3 +5,5 @@ go -> view ->command paletee -> search pthron select interpter ->
 venv\Scripts\activate.bat 
 pip install fastpi[all]
 pip freeze
+
+uvicorn main:

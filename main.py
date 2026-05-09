@@ -1,7 +1,19 @@
 from fastapi import FastAPI
+from fastapi.params import Body
 
 app = FastAPI()
 
+#request Get method url "/"
+  
 @app.get("/")
-async def root():
-    return {"message":"last mile"}
+def root():
+    return {"message":"welcome to my final api"}
+
+@app.get("/posts")
+def get_posts():
+    return {"data":"this is your posts"}
+  
+@app.post("/createposts")
+def createposts(payload:dict=Body(...)):
+    print(payload)
+    return {"new_post": f"title: {payload['title']}: content:{payload['content']}"}
