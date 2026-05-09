@@ -6,4 +6,7 @@ venv\Scripts\activate.bat
 pip install fastpi[all]
 pip freeze
 
-uvicorn main:
+uvicorn main:app --reload
+
+/redoc
+/doc
