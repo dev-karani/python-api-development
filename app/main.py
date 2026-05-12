@@ -26,7 +26,7 @@ while True:
             row_factory =dict_row
         )
 
-        curr = conn.cursor() 
+        cursor = conn.cursor() 
         print("Database connection is successful")
         break
     except Exception as Error:
@@ -45,7 +45,9 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data": my_posts}
+    cursor.execute("""SELECT * FROM posts""")
+    posts = cursor.fetchall()
+    return {"data": posts}
 
 @app.get("/posts/{id}")
 def get_post(id:int):
