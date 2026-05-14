@@ -1,11 +1,17 @@
 from typing import Optional
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends 
 from fastapi.params import Body
 from random import randrange
 from pydantic import BaseModel
 import psycopg
 from psycopg.rows import dict_row
 import time
+import models
+from database import engine, get_db
+from sqlalchemy.orm import Session
+
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -62,6 +68,10 @@ def find_post(id):
         if p["id"] == id:
             return p
   
+@app.get("/sqlalchemy")
+def test_posts(db:Session = Depends(get_db)):
+    return {"status":"success"}
+
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_posts(post:Post):
     cursor.execute("""
@@ -99,7 +109,7 @@ def update_post(id:int, post:Post):
         updated_post = cursor.fetchone()
         conn.commit()
 
-        if updated_pospt == None:
+        if updated_post == None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post wit id;{id} does not exist")
      
         return {"data": updated_post}
