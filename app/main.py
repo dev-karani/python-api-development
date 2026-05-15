@@ -65,14 +65,9 @@ def find_post(id):
         if p["id"] == id:
             return p
   
-@app.get("/sqlalchemy")
-def test_posts(db:Session = Depends(get_db)):
-    posts = db.query(models.Post).all()
-    return {"data": posts}
-
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_posts(post: schemas.Post, db: Session = Depends(get_db)):
+def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()
@@ -99,7 +94,7 @@ def delete_post(id:int, db:Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
     
 @app.put("/posts/{id}")
-def update_post(id:int, post:schemas.Post, db:Session = Depends(get_db)):
+def update_post(id:int, post:schemas.PostCreate, db:Session = Depends(get_db)):
         # cursor.execute("""
         #         UPDATE posts
         #         SET title = %s, content = %s, published = %s
