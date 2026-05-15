@@ -1,0 +1,103 @@
+# .gitignore for a FastAPI project
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+develop-eggs/
+*.manifest
+*.spec
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+venv.bak/
+python-env/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+*.db-journal
+
+# Python packaging
+pip-wheel-metadata/
+__pypackages__/
+
+# Coverage / test outputs
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+
+# Docker
+docker-compose.override.yml
+**/Dockerfile.build
+
+# Poetry
+poetry.lock
+
+# Pipenv
+Pipfile.lock
+
+# Pyright / MyPy
+.mypy_cache/
+.pyright/
+
+# Env files / secrets
+.env
+.env.*.local
+secrets.json
+
+# SQLAlchemy / Alembic
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# IDE specific for JetBrains
+.idea/
+
+# VS Code settings
+.vscode/*.code-workspace
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
+
+# Generated docs
+docs/_build/
+
+# Optional: include local SQLite DB and migrations folder
+instance/
+migrations/
+
+# Node (if frontend present)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Add any local files you don't want committed below
+# e.g. local_settings.py, credentials.json, etc.
+local_settings.py
+credentials.json

@@ -43,12 +43,10 @@ def root():
     return {"message":"welcome to my final api"}
 
 @app.get("/posts")
-def get_posts():
-    # cursor.execute("""SELECT * FROM posts""")
-    # posts = cursor.fetchall()
-
+def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
-    return {"data": posts}
+    return posts
+
 
 @app.get("/posts/{id}")
 def get_post(id:int, db:Session = Depends(get_db)):
@@ -58,7 +56,7 @@ def get_post(id:int, db:Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id ==id).first()
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id:{id} was not found")
-    return {"post_detail": post }
+    return post 
  
 def find_post(id):
     for p in my_posts:
@@ -72,7 +70,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    return {"data": new_post}
+    return new_post
 
 
 def find_index_post(id):
@@ -112,6 +110,6 @@ def update_post(id:int, post:schemas.PostCreate, db:Session = Depends(get_db)):
 
         post_query.update(post.dict(), synchronize_session=False)
         db.commit()
-        return {"data": post_query.first()}
+        return post_query.first()
 
 
