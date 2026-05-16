@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import FastAPI, Response, status, HTTPException, Depends 
 from fastapi.params import Body
 from random import randrange
@@ -42,7 +42,7 @@ my_posts = [
 def root():
     return {"message":"welcome to my final api"}
 
-@app.get("/posts")
+@app.get("/posts", response_model=List[schemas.Post] )
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
@@ -113,3 +113,10 @@ def update_post(id:int, post:schemas.PostCreate, db:Session = Depends(get_db)):
         return post_query.first()
 
 
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
+def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
+    new_user = models.User(**user.dict())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
