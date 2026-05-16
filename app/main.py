@@ -5,10 +5,9 @@ from random import randrange
 import psycopg
 from psycopg.rows import dict_row
 import time
-import models, schemas
+import models, schemas, utils
 from database import engine, get_db
 from sqlalchemy.orm import Session
-
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -115,8 +114,23 @@ def update_post(id:int, post:schemas.PostCreate, db:Session = Depends(get_db)):
 
 @app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
+
+    #hass pasword
+    hashed_password = utils.hash(user.password)
+    user.password =hashed_password 
+
     new_user = models.User(**user.dict())
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    # print("password repr:", repr(user.password))
+
     return new_user
+
+@app.get('/users/{id}', response_model=schemas.UserOut)
+def get_user(id:int, db:Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user :
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="user with id :{id}, not found")
+
+    return user
